@@ -10,6 +10,9 @@ from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_core_components as dcc
 import dash_html_components as html
 
+import json
+from textwrap import dedent as d
+
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
@@ -18,6 +21,19 @@ app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
 server = app.server
+
+# Import data
+df = pd.read_csv(DATA_PATH.joinpath("data.csv"), low_memory=False)
+print(df)
+df["Dates"] = pd.to_datetime(df["Dates"])
+
+
+styles = {
+    'pre': {
+        'border': 'thin lightgrey solid',
+        'overflowX': 'scroll'
+    }
+}
 
 # Create app layout
 app.layout = html.Div(
@@ -121,9 +137,21 @@ app.layout = html.Div(
                             className="row container-display",
                         ),
                         html.Div(
-                            [dcc.Graph(id="count_graph")],
+                            [dcc.Graph(id="count_graph",
+                            figure={
+                                'data': [dict(
+                                    x=df["Dates"],
+                                    y=df["Random"],
+                                    type="bar",
+                                )],                                
+                            },
+                            config={
+                                'showAxisRangeEntryBoxes':True,
+                            }
+                            )],
                             id="countGraphContainer",
                             className="pretty_container",
+                            
                         ),
                     ],
                     id="right-column",
@@ -132,8 +160,24 @@ app.layout = html.Div(
             ],
             className="row flex-display",
         ),
+        html.Div([
+            dcc.Markdown(d("""
+                **Zoom and Relayout Data**
+
+                Click and drag on the graph to zoom or click on the zoom
+                buttons in the graph's menu bar.
+                Clicking on legend items will also fire
+                this event.
+            """)),
+            html.Pre(id='relayout-data', style=styles['pre']),
+        ], className='three columns')
     ],)
 
+@app.callback(
+    Output('relayout-data', 'children'),
+    [Input('count_graph', 'relayoutData')])
+def display_relayout_data(relayoutData):
+    return json.dumps(relayoutData, indent=2)
 
 
 # Main
