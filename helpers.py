@@ -29,6 +29,35 @@ def DataToMonths(data):
     df = pd.DataFrame(l, columns=list(data.head()))
     return(df)
 
+def DataToDays(df):
+    head = list(df.head())
+    d = {}
+    for index, row in df.iterrows():
+        year = row[head[0]].year
+        month = row[head[0]].month
+        day = row[head[0]].day
+        if year not in d:
+            d[year] = {}
+        if month not in d[year]:
+            d[year][month] = {}
+        if day not in d[year][month]:
+            d[year][month][day] = {}
+        d[year][month][day][head[0]] = dt.datetime(year, month, day)
+        for col in head[1:]:
+            if col not in d[year][month][day]:
+                d[year][month][day][col] = 0
+            d[year][month][day][col] += row[col]
+    l = []
+    for y in d:
+        for m in d[y]:
+            for day in d[y][m]:
+                ll = []
+                for col in d[y][m][day]:
+                    ll.append(d[y][m][day][col])
+                l.append(ll)
+    df = pd.DataFrame(l, columns=list(df.head()))
+    return(df)
+
 def SumOfBirds(df, countKey):
     total = 0
     for index, row in df.iterrows():
@@ -50,12 +79,22 @@ def FilterData(df, startDate, endDate):
     ]
     return dff
 
-def TotalSelBirds(timeSlider, df):
+def TotalSelBirds(df, timeSlider):
     times = TimeSliderToDate(timeSlider)
     dff = FilterData(df, times[0], times[1])
     total = 0
-    print(dff)
+    #print(dff)
     for i in dff["Birds"]:
-        print(i)
+        # print(i)
         total += i
     return total
+
+def AverageBirdDay(df, timeSlider):
+    times = TimeSliderToDate(timeSlider)
+    dff = FilterData(df, times[0], times[1])
+    dff = DataToDays(dff)
+    total, count = 0,0
+    for i in dff["Birds"]:
+        total += i
+        count += 1
+    return round(total/count,1)

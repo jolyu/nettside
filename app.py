@@ -27,16 +27,17 @@ server = app.server
 
 # Import data
 df = pd.read_csv(DATA_PATH.joinpath("data.csv"), low_memory=False)
-print(df)
+#print(df)
 df["Dates"] = pd.to_datetime(df["Dates"])
 
 avalible_years = list(set([date.year for date in df["Dates"]]))
 avalible_years.sort()
+YEARS = [{'label':str(y), "value":y} for y in avalible_years]
 avalible_months = list(set([date.month for date in df["Dates"]]))
 avalible_months.sort()
 avalible_dates = [avalible_years, avalible_months]
-print(avalible_dates)
-print(list(df.columns))
+#print(avalible_dates)
+#print(list(df.columns))
 
 dff = DataToMonths(df)
 
@@ -125,12 +126,19 @@ app.layout = html.Div(
                         dcc.RangeSlider(
                             id="time_slider",
                             min=min(avalible_years),
-                            max=max(avalible_years),
+                            max=max(avalible_years) + 1,
                             value=[min(avalible_years), max(avalible_years)],
                             step=1/12,
                             className="dcc_control",
                         ),
                         html.P("Filter? Currently min height", className="control_label"),
+                        dcc.Dropdown(
+                            id="year_select",
+                            options=YEARS,
+                            multi=True,
+                            value=avalible_years[-2:],
+                            className="dcc_control",
+                        )
                     ],
                     className="pretty_container four columns",
                     style={"min-height": "30em"},
@@ -143,22 +151,22 @@ app.layout = html.Div(
                                 html.Div(
                                     [html.H6(id="birds_per_time"), html.P("no. birds per day")],
                                     id="birds",
-                                    className="mini_container",
+                                    className="mini_container three columns",
                                 ),
                                 html.Div(
                                     [html.H6(id="most_active_time"), html.P("most active time of day")],
                                     id="active_time",
-                                    className="mini_container",
+                                    className="mini_container three columns",
                                 ),
                                 html.Div(
                                     [html.H6(id="selected_birds"), html.P("total selected birds")],
                                     id="selected_total",
-                                    className="mini_container",
+                                    className="mini_container three columns",
                                 ),
                                 html.Div(
                                     [html.H6(id="total_birds"), html.P("total birds spotted")],
                                     id="total",
-                                    className="mini_container",
+                                    className="mini_container four columns",
                                 ),
                             ],
                             id="info-container",
@@ -176,6 +184,33 @@ app.layout = html.Div(
                 ),
             ],
             className="row flex-display",
+        ),
+        html.Div(
+            [
+                html.Div(
+                    [
+                        html.Div(
+                            [dcc.Graph(id="monthAverage")],
+                            id="monthAverageContainer",
+                            className="pretty_container",
+                        )
+                    ],
+                    id="lower-left-column",
+                    className="six columns",
+                ),
+                html.Div(
+                    [
+                        html.Div(
+                            [dcc.Graph(id="dayAverage")],
+                            id="dayAverageContainer",
+                            className="pretty_container"
+                        )
+                    ],
+                    id="lower-right-column",
+                    className="six columns",
+                ),
+            ],
+            className="row flex-display"
         ),
         html.Div([
             dcc.Markdown(d("""
@@ -201,7 +236,8 @@ app.layout = html.Div(
             """)),
             html.Pre(id='relayout-data', style=styles['pre']),
         ], className='three columns')
-    ],)
+    ],
+)
 
 
 # Create callbacks
@@ -237,7 +273,7 @@ def makeCountFigure(timeSlider):
     times = TimeSliderToDate(timeSlider)
 
     colors = []
-    print(times)
+    #print(times)
     for i in dff["Dates"]:
         if i >= times[0] and i < times[1]:
             colors.append("rgb(123, 199, 255)")
@@ -274,11 +310,16 @@ def makeCountFigure(timeSlider):
 
 @app.callback(
     Output("time_slider", "value"),
-    [Input("count_graph", "selectedData")],
+    [
+        Input("count_graph", "selectedData"),
+        Input("year_select", "value"),
+    ],
 )
-def UpdateSlider(countGraphSelected):
+def UpdateSlider(countGraphSelected, yearValues):
     if countGraphSelected is None:
-        return [min(avalible_years), max(avalible_years) + 1]
+        return [min(yearValues), max(yearValues) + 1]
+    print(countGraphSelected)
+    
     nums = [dt.datetime.strptime(d, '%Y-%m-%d %H:%M:%S.%f') for d in countGraphSelected["range"]["x"]]
     
     return [nums[0].year + (nums[0].month - 1) * 1/12 , nums[1].year+ nums[1].month * 1/12]
@@ -288,20 +329,23 @@ def UpdateSlider(countGraphSelected):
     [Input("time_slider", "value")],
 )
 def UpdateQuickFacts(timeSlider):
+    averageBirds = AverageBirdDay(df, timeSlider)
+    selTotal = TotalSelBirds(dff, timeSlider)
     total = SumOfBirds(dff, "Birds")
-    selTotal = TotalSelBirds(timeSlider, dff)
-    return [selTotal, total]
+
+    return [averageBirds, selTotal, total]
 
 
 @app.callback(
     [
+        Output("birds_per_time", "children"),
         Output("selected_birds", "children"),
         Output("total_birds", "children"),
     ],
     [Input("aggregate_data", "data")],
 )
 def UpdateText(data):
-    print(data)
+    #print(data)
     return [str(i) for i in data]
 
 
