@@ -213,30 +213,6 @@ app.layout = html.Div(
             ],
             className="row flex-display"
         ),
-        html.Div([
-            dcc.Markdown(d("""
-                **Selection Data**
-
-                Choose the lasso or rectangle tool in the graph's menu
-                bar and then select points in the graph.
-
-                Note that if `layout.clickmode = 'event+select'`, selection data also 
-                accumulates (or un-accumulates) selected data if you hold down the shift
-                button while clicking.
-            """)),
-            html.Pre(id='selected-data', style=styles['pre']),
-        ], className='three columns'),
-        html.Div([
-            dcc.Markdown(d("""
-                **Zoom and Relayout Data**
-
-                Click and drag on the graph to zoom or click on the zoom
-                buttons in the graph's menu bar.
-                Clicking on legend items will also fire
-                this event.
-            """)),
-            html.Pre(id='relayout-data', style=styles['pre']),
-        ], className='three columns')
     ],
 )
 
@@ -247,21 +223,6 @@ app.clientside_callback(
     Output("output-clientside", "children"),
     [Input("count_graph", "figure")],
 )
-
-### TEST
-@app.callback(
-    Output('relayout-data', 'children'),
-    [Input('count_graph', 'relayoutData')])
-def display_relayout_data(relayoutData):
-    return json.dumps(relayoutData, indent=2)
-
-@app.callback(
-    Output('selected-data', 'children'),
-    [Input('count_graph', 'selectedData')])
-def display_selected_data(selectedData):
-    return json.dumps(selectedData, indent=2)
-
-### END TEST
 
 
 @app.callback(
@@ -408,6 +369,17 @@ def UpdateDaySel(daySelector, timeSlider):
         days = daySelector["range"]["x"]
     print(days)
     return days
+
+@app.callback(
+    Output("dayAverage", "figure"),
+    [Input("day_selector", "data")]
+)
+def CreateDayGraph(dates):
+    dates = DaySelectorString(dates)
+    dff = FilterData(df, dates[0], dates[1])
+
+    DayAverage(dff)
+    return None
 
 
 
