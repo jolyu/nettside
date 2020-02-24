@@ -98,3 +98,12 @@ def AverageBirdDay(df, timeSlider):
         total += i
         count += 1
     return round(total/count,1)
+
+def DaySelectorString(dates):
+    dates = [d.replace("T", " ") for d in dates]
+    #dates = [pd.to_datetime(d) for d in dates]
+    try:
+        dates = [dt.datetime.strptime(d, '%Y-%m-%d %H:%M:%S.%f') for d in dates]
+    except:
+        dates = [dt.datetime.strptime(d, '%Y-%m-%d %H:%M:%S') for d in dates]
+    return dates

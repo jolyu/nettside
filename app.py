@@ -65,6 +65,7 @@ styles = {
 app.layout = html.Div(
     [
         dcc.Store(id="aggregate_data"),
+        dcc.Store(id="day_selector"),
         # empty Div to trigger javascript file for graph resizing
         html.Div(id="output-clientside"),
         html.Div(
@@ -318,9 +319,7 @@ def makeCountFigure(timeSlider):
 def UpdateSlider(countGraphSelected, yearValues):
     if countGraphSelected is None:
         return [min(yearValues), max(yearValues) + 1]
-    print(countGraphSelected)
-    
-    nums = [dt.datetime.strptime(d, '%Y-%m-%d %H:%M:%S.%f') for d in countGraphSelected["range"]["x"]]
+    nums = DaySelectorString(countGraphSelected["range"]["x"])
     
     return [nums[0].year + (nums[0].month - 1) * 1/12 , nums[1].year+ nums[1].month * 1/12]
 
@@ -347,6 +346,68 @@ def UpdateQuickFacts(timeSlider):
 def UpdateText(data):
     #print(data)
     return [str(i) for i in data]
+
+@app.callback(
+    Output("monthAverage", "figure"),
+    [Input("time_slider", "value"),
+    #Input("monthAverage", "selectedData"),
+    Input("day_selector", "data")],
+)
+def CreateMonthGraph(timeSlider, daySelector):
+    layout_count = copy.deepcopy(layout)
+
+    times = TimeSliderToDate(timeSlider)
+    dff = FilterData(df, times[0], times[1])
+    dfff = DataToDays(dff)
+    days = DaySelectorString(daySelector)
+
+    colors = []
+    for i in dfff["Dates"]:
+        if i >= days[0] and i < days[1]:
+            colors.append("rgb(123, 199, 255)")
+        else:
+            colors.append("rgba(123, 199, 255, 0.2)")
+
+    data = [
+        dict(
+            type="scatter",
+            mode="markers",
+            x=dfff["Dates"],
+            y=dfff["Birds"],
+            name="All birds",
+            opacity=0,
+            hoverinfo="skip",
+        ),
+        dict(
+            type="bar",
+            x=dfff["Dates"],
+            y=dfff["Birds"],
+            name="All birds",
+            marker=dict(color=colors),
+        ),
+    ]
+
+    layout_count["title"] = "Day to day basis"
+    layout_count["dragmode"] = "select"
+    layout_count["showlegend"] = False
+    layout_count["autosize"] = True
+
+    figure = dict(data=data, layout=layout_count)
+    return figure
+
+@app.callback(
+    Output("day_selector", "data"),
+    [Input("monthAverage", "selectedData"),
+    Input("time_slider", "value")],
+)
+def UpdateDaySel(daySelector, timeSlider):
+    days = []
+    if daySelector is None:
+        days = TimeSliderToDate(timeSlider)
+    else:
+        days = daySelector["range"]["x"]
+    print(days)
+    return days
 
 
 
