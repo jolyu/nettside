@@ -28,7 +28,7 @@ for i in range(10000):
 print(dates)
 
 dates.sort()
-dates.insert(0,['"'+ "Dates" + '"', '"'+"Birds"'"', '"'+"Wind"'"'])
+dates.insert(0,['"'+ "dates" + '"', '"'+"birds"'"', '"'+"wind"'"'])
 
 with open("data/data.csv","w") as f:
     writer = csv.writer(f,quotechar = "'")

@@ -26,14 +26,14 @@ app = dash.Dash(
 server = app.server
 
 # Import data
-df = pd.read_csv(DATA_PATH.joinpath("data.csv"), low_memory=False)
-#print(df)
-df["Dates"] = pd.to_datetime(df["Dates"])
+df = pd.read_csv(DATA_PATH.joinpath("data.csv"), parse_dates=["dates"], low_memory=False, index_col="dates")
+print(df.index)
+#df["dates"] = pd.to_datetime(df["dates"])
 
-avalible_years = list(set([date.year for date in df["Dates"]]))
+avalible_years = list(set([date.year for date in df["dates"]]))
 avalible_years.sort()
 YEARS = [{'label':str(y), "value":y} for y in avalible_years]
-avalible_months = list(set([date.month for date in df["Dates"]]))
+avalible_months = list(set([date.month for date in df["dates"]]))
 avalible_months.sort()
 avalible_dates = [avalible_years, avalible_months]
 #print(avalible_dates)
@@ -114,7 +114,7 @@ app.layout = html.Div(
             ],
             id="header",
             className="row flex-display",
-            style={"margin-bottom": "1em"},
+            style={"margin-bottom": "0em"},
         ),
         html.Div(
             [
@@ -132,7 +132,7 @@ app.layout = html.Div(
                             step=1/12,
                             className="dcc_control",
                         ),
-                        html.P("Filter? Currently min height", className="control_label"),
+                        html.P("Filter? Export Currently min height", className="control_label"),
                         dcc.Dropdown(
                             id="year_select",
                             options=YEARS,
@@ -236,7 +236,7 @@ def makeCountFigure(timeSlider):
 
     colors = []
     #print(times)
-    for i in dff["Dates"]:
+    for i in dff["dates"]:
         if i >= times[0] and i < times[1]:
             colors.append("rgb(123, 199, 255)")
         else:
@@ -246,16 +246,16 @@ def makeCountFigure(timeSlider):
         dict(
             type="scatter",
             mode="markers",
-            x=dff["Dates"],
-            y=dff["Birds"],
+            x=dff["dates"],
+            y=dff["birds"],
             name="All birds",
             opacity=0,
             hoverinfo="skip",
         ),
         dict(
             type="bar",
-            x=dff["Dates"],
-            y=dff["Birds"],
+            x=dff["dates"],
+            y=dff["birds"],
             name="All birds",
             marker=dict(color=colors),
         ),
@@ -277,7 +277,7 @@ def makeCountFigure(timeSlider):
         Input("year_select", "value"),
     ],
 )
-def UpdateSlider(countGraphSelected, yearValues):
+def Updateslider(countGraphSelected, yearValues):
     if countGraphSelected is None:
         return [min(yearValues), max(yearValues) + 1]
     nums = DaySelectorString(countGraphSelected["range"]["x"])
@@ -323,7 +323,7 @@ def CreateMonthGraph(timeSlider, daySelector):
     days = DaySelectorString(daySelector)
 
     colors = []
-    for i in dfff["Dates"]:
+    for i in dfff["dates"]:
         if i >= days[0] and i < days[1]:
             colors.append("rgb(123, 199, 255)")
         else:
@@ -333,16 +333,16 @@ def CreateMonthGraph(timeSlider, daySelector):
         dict(
             type="scatter",
             mode="markers",
-            x=dfff["Dates"],
-            y=dfff["Birds"],
+            x=dfff["dates"],
+            y=dfff["birds"],
             name="All birds",
             opacity=0,
             hoverinfo="skip",
         ),
         dict(
             type="bar",
-            x=dfff["Dates"],
-            y=dfff["Birds"],
+            x=dfff["dates"],
+            y=dfff["birds"],
             name="All birds",
             marker=dict(color=colors),
         ),
@@ -375,11 +375,40 @@ def UpdateDaySel(daySelector, timeSlider):
     [Input("day_selector", "data")]
 )
 def CreateDayGraph(dates):
+    layout_count = copy.deepcopy(layout)
+
     dates = DaySelectorString(dates)
     dff = FilterData(df, dates[0], dates[1])
 
-    DayAverage(dff)
-    return None
+    dfff = HourAverage(dff)
+    print(dfff)
+    data = [
+        dict(
+            type="scatter",
+            mode="markers",
+            x=dfff["dates"],
+            y=dfff["birds"],
+            name="All birds",
+            opacity=0,
+            hoverinfo="skip",
+        ),
+        dict(
+            type="spline",
+            line=dict(shape="spline"),
+            x=dfff["dates"],
+            y=dfff["birds"],
+            name="All birds",
+            marker=dict(color="rgb(123, 199, 255)"),
+        ),
+    ]
+
+    layout_count["title"] = "Hourly"
+    layout_count["dragmode"] = "select"
+    layout_count["showlegend"] = False
+    layout_count["autosize"] = True
+
+    figure = dict(data=data, layout=layout_count)
+    return figure
 
 
 
