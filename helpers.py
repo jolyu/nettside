@@ -4,57 +4,11 @@ import math
 
 
 def DataToMonths(data):
-    head = list(data.head())
-    d = {}
-    for index, row in data.iterrows():
-        year = row[head[0]].year
-        month = row[head[0]].month
-        if year not in d:
-            d[year] = {}
-        if month not in d[year]:
-            d[year][month] = {}
-        d[year][month][head[0]] = dt.datetime(year, month)
-        for col in head[1:]:
-            if col not in d[year][month]:
-                d[year][month][col] = 0
-            d[year][month][col] += row[col]
-    l = []
-    for y in d:
-        for m in d[y]:
-            ll = []
-            for col in d[y][m]:
-                ll.append(d[y][m][col])
-            l.append(ll)
-    df = pd.DataFrame(l, columns=list(data.head()))
+    df = data.resample('M').sum()
     return(df)
 
 def DataToDays(df):
-    head = list(df.head())
-    d = {}
-    for index, row in df.iterrows():
-        year = row[head[0]].year
-        month = row[head[0]].month
-        day = row[head[0]].day
-        if year not in d:
-            d[year] = {}
-        if month not in d[year]:
-            d[year][month] = {}
-        if day not in d[year][month]:
-            d[year][month][day] = {}
-        d[year][month][day][head[0]] = dt.datetime(year, month, day)
-        for col in head[1:]:
-            if col not in d[year][month][day]:
-                d[year][month][day][col] = 0
-            d[year][month][day][col] += row[col]
-    l = []
-    for y in d:
-        for m in d[y]:
-            for day in d[y][m]:
-                ll = []
-                for col in d[y][m][day]:
-                    ll.append(d[y][m][day][col])
-                l.append(ll)
-    df = pd.DataFrame(l, columns=list(df.head()))
+    df = df.resample('D').sum()
     return(df)
 
 def SumOfBirds(df, countKey):
@@ -68,21 +22,18 @@ def TimeSliderToDate(tS):
     for i in tS:
         year = math.floor(i)
         month = round((i - year) * 12)
-        times.append(dt.datetime.strptime(str(year) + "-" + str(month + 1), '%Y-%m'))
+        times.append(dt.datetime(year, month + 1, 1))
     return times
 
 def FilterData(df, startDate, endDate):
-    dff = df[
-        (df["dates"] > startDate)
-        & (df["dates"] < endDate)
-    ]
+    dff = df.loc[(df.index > startDate)
+        & (df.index < endDate)]
     return dff
 
 def TotalSelBirds(df, timeSlider):
     times = TimeSliderToDate(timeSlider)
     dff = FilterData(df, times[0], times[1])
     total = 0
-    #print(dff)
     for i in dff["birds"]:
         # print(i)
         total += i
@@ -135,45 +86,7 @@ def DayAverage(df):
     #print(d)
         
 def HourAverage(df):
-    head = list(df.head())
-    d = {}
-    rows = 0
-    for index, row in df.iterrows():
-        year = row["dates"].year
-        month = row["dates"].month
-        day = row["dates"].day
-        hour = row["dates"].hour
-        #print(year, month, day, hour)
-        if year not in d:
-            d[year] = {}
-        if month not in d[year]:
-            d[year][month] = {}
-        if day not in d[year][month]:
-            d[year][month][day] = {}
-        if hour not in d[year][month][day]:
-            rows = 0
-            d[year][month][day][hour] = {}
-        d[year][month][day][hour][head[0]] = dt.datetime(year, month, day, hour)
-        for col in head[1:]:
-            rows += 1
-            if col not in d[year][month][day][hour]:
-                d[year][month][day][hour][col] = 0
-            d[year][month][day][hour][col] += row[col]
-        """ keys = d[year][month][day][hour].keys()
-        for k in keys[1:]:
-            k *= 1/rows """
-    l = []
-    for y in d:
-        for m in d[y]:
-            for day in d[y][m]:
-                for h in d[y][m][day]:
-                    ll = []
-                    for col in d[y][m][day][h]:
-                        ll.append(d[y][m][day][h][col])
-                    l.append(ll)
-    print(l)
-    df = pd.DataFrame(l, columns=list(df.head()))
-    print(df)
+    df = df.resample('H').sum()
     return(df)
                     
 

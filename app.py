@@ -27,19 +27,21 @@ server = app.server
 
 # Import data
 df = pd.read_csv(DATA_PATH.joinpath("data.csv"), parse_dates=["dates"], low_memory=False, index_col="dates")
-print(df.index)
+#print(df)
 #df["dates"] = pd.to_datetime(df["dates"])
 
-avalible_years = list(set([date.year for date in df["dates"]]))
+avalible_years = list(set([date.year for date in df.index]))
 avalible_years.sort()
 YEARS = [{'label':str(y), "value":y} for y in avalible_years]
-avalible_months = list(set([date.month for date in df["dates"]]))
+avalible_months = list(set([date.month for date in df.index]))
 avalible_months.sort()
 avalible_dates = [avalible_years, avalible_months]
 #print(avalible_dates)
 #print(list(df.columns))
 
 dff = DataToMonths(df)
+
+#print(dff)
 
 
 layout = dict(
@@ -236,7 +238,7 @@ def makeCountFigure(timeSlider):
 
     colors = []
     #print(times)
-    for i in dff["dates"]:
+    for i in dff.index:
         if i >= times[0] and i < times[1]:
             colors.append("rgb(123, 199, 255)")
         else:
@@ -246,7 +248,7 @@ def makeCountFigure(timeSlider):
         dict(
             type="scatter",
             mode="markers",
-            x=dff["dates"],
+            x=dff.index,
             y=dff["birds"],
             name="All birds",
             opacity=0,
@@ -254,7 +256,7 @@ def makeCountFigure(timeSlider):
         ),
         dict(
             type="bar",
-            x=dff["dates"],
+            x=dff.index,
             y=dff["birds"],
             name="All birds",
             marker=dict(color=colors),
@@ -291,7 +293,7 @@ def Updateslider(countGraphSelected, yearValues):
 def UpdateQuickFacts(timeSlider):
     averageBirds = AverageBirdDay(df, timeSlider)
     selTotal = TotalSelBirds(dff, timeSlider)
-    total = SumOfBirds(dff, "Birds")
+    total = SumOfBirds(dff, "birds")
 
     return [averageBirds, selTotal, total]
 
@@ -323,7 +325,7 @@ def CreateMonthGraph(timeSlider, daySelector):
     days = DaySelectorString(daySelector)
 
     colors = []
-    for i in dfff["dates"]:
+    for i in dfff.index:
         if i >= days[0] and i < days[1]:
             colors.append("rgb(123, 199, 255)")
         else:
@@ -333,7 +335,7 @@ def CreateMonthGraph(timeSlider, daySelector):
         dict(
             type="scatter",
             mode="markers",
-            x=dfff["dates"],
+            x=dfff.index,
             y=dfff["birds"],
             name="All birds",
             opacity=0,
@@ -341,7 +343,7 @@ def CreateMonthGraph(timeSlider, daySelector):
         ),
         dict(
             type="bar",
-            x=dfff["dates"],
+            x=dfff.index,
             y=dfff["birds"],
             name="All birds",
             marker=dict(color=colors),
@@ -386,7 +388,7 @@ def CreateDayGraph(dates):
         dict(
             type="scatter",
             mode="markers",
-            x=dfff["dates"],
+            x=dfff.index,
             y=dfff["birds"],
             name="All birds",
             opacity=0,
@@ -395,7 +397,7 @@ def CreateDayGraph(dates):
         dict(
             type="spline",
             line=dict(shape="spline"),
-            x=dfff["dates"],
+            x=dfff.index,
             y=dfff["birds"],
             name="All birds",
             marker=dict(color="rgb(123, 199, 255)"),
