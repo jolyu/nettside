@@ -57,33 +57,6 @@ def DaySelectorString(dates):
     except:
         dates = [dt.datetime.strptime(d, '%Y-%m-%d %H:%M:%S') for d in dates]
     return dates
-
-def DayAverage(df):
-    head = list(df.head())
-    d = {}
-    days = 1
-    lastDay = [0,0,0]
-    for index, row in df.iterrows():
-        day = [row["dates"].year,row["dates"].month,row["dates"].day]
-        if lastDay[0] < day[0] or lastDay[1] < day[1] or lastDay[2] < day[2]:
-            days += 1
-            lastDay = day
-        hour = row["dates"].hour
-        minute = row["dates"].minute
-        if hour not in d:
-            d[hour] = {}
-        if minute not in d[hour]:
-            d[hour][minute] = {}
-        for col in head[1:]:
-            if col not in d[hour][minute]:
-                d[hour][minute][col] = 0
-            d[hour][minute][col] += row[col]
-    for h in d:
-        for m in d[h]:
-            for c in d[h][m]:
-                d[h][m][c] *= 1
-
-    #print(d)
         
 def HourAverage(df):
     df = df.resample('H').sum()
