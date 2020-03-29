@@ -12,7 +12,7 @@ def random_date(start, end):
     random_second = randrange(int_delta)
     return start + timedelta(seconds=random_second)
 
-d1 = datetime.strptime('2020/1/1 01:30:00', '%Y/%m/%d %H:%M:%S')
+d1 = datetime.strptime('2019/1/1 01:30:00', '%Y/%m/%d %H:%M:%S')
 d2 = datetime.strptime('2020/12/31 01:30:00', '%Y/%m/%d %H:%M:%S')
 
 dates = []

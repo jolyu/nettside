@@ -138,8 +138,8 @@ app.layout = html.Div(
                         dcc.Dropdown(
                             id="year_select",
                             options=YEARS,
-                            multi=True,
-                            value=avalible_years[-2:],
+                            multi=False,
+                            value=max(avalible_years),
                             className="dcc_control",
                         )
                     ],
@@ -152,22 +152,22 @@ app.layout = html.Div(
                         html.Div(
                             [
                                 html.Div(
-                                    [html.H6(id="birds_per_time"), html.P("no. birds per day")],
+                                    [html.H6("0",id="birds_per_time"), html.P("no. birds per day")],
                                     id="birds",
                                     className="mini_container three columns",
                                 ),
                                 html.Div(
-                                    [html.H6(id="most_active_time"), html.P("most active time of day")],
+                                    [html.H6("0",id="most_active_time"), html.P("most active time of day")],
                                     id="active_time",
                                     className="mini_container three columns",
                                 ),
                                 html.Div(
-                                    [html.H6(id="selected_birds"), html.P("total selected birds")],
+                                    [html.H6("0",id="selected_birds"), html.P("total selected birds")],
                                     id="selected_total",
                                     className="mini_container three columns",
                                 ),
                                 html.Div(
-                                    [html.H6(id="total_birds"), html.P("total birds spotted")],
+                                    [html.H6("0",id="total_birds"), html.P("total birds spotted")],
                                     id="total",
                                     className="mini_container four columns",
                                 ),
@@ -226,24 +226,30 @@ app.clientside_callback(
     [Input("count_graph", "figure")],
 )
 
-
+# Create Main graph from slider
 @app.callback(
     Output("count_graph", "figure"),
     [Input("time_slider", "value")],
 )
 def makeCountFigure(timeSlider):
+    ''' Reads the values of the main time slider and updates the main selector graph '''
+    # Copy general layout settings
     layout_count = copy.deepcopy(layout)
 
+    # Get times from TimeSlider
     times = TimeSliderToDate(timeSlider)
 
+    # Color the bars according to their selection
     colors = []
-    #print(times)
     for i in dff.index:
         if i >= times[0] and i < times[1]:
+            # If selected, then color blue
             colors.append("rgb(123, 199, 255)")
         else:
+            # if not selected, color light blue
             colors.append("rgba(123, 199, 255, 0.2)")
     
+    # Insert data from DataFrame dff, which is sorted into months
     data = [
         dict(
             type="scatter",
@@ -263,15 +269,19 @@ def makeCountFigure(timeSlider):
         ),
     ]
 
+    # More layout settings
     layout_count["title"] = "Total birds per month"
-    layout_count["dragmode"] = "select"
+    layout_count["dragmode"] = "select" 
     layout_count["showlegend"] = False
     layout_count["autosize"] = True
 
+    # Create the settings dictionary for the graph
     figure = dict(data=data, layout=layout_count)
     return figure
 
 
+# Read the main graph and output selection range to slider
+# This again runs the update graph, to color the graph correct
 @app.callback(
     Output("time_slider", "value"),
     [
@@ -279,12 +289,16 @@ def makeCountFigure(timeSlider):
         Input("year_select", "value"),
     ],
 )
-def Updateslider(countGraphSelected, yearValues):
+def Updateslider(countGraphSelected, year):
+    ''' Reads the graph, and the year drop-down, updates the slider'''
+    # Check if none items are selected
     if countGraphSelected is None:
-        return [min(yearValues), max(yearValues) + 1]
+        return [year, year + 1]
+        
+    # Create days from string stored in graph
     nums = DaySelectorString(countGraphSelected["range"]["x"])
-    
-    return [nums[0].year + (nums[0].month - 1) * 1/12 , nums[1].year+ nums[1].month * 1/12]
+    # Returns the year values back to the graph, with step intervals equal to one month
+    return [nums[0].year + (nums[0].month - 1) * 1/12 , nums[1].year + nums[1].month * 1/12]
 
 @app.callback(
     Output("aggregate_data", "data"),
