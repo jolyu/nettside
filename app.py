@@ -15,13 +15,15 @@ from textwrap import dedent as d
 
 # Helper funtions
 from helpers import *
+from database import *
 
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
 app = dash.Dash(
-    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+    __name__, 
+    meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
 server = app.server
 
@@ -122,6 +124,17 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
+                        html.Div([
+                            dcc.DatePickerRange(
+                                id='my-date-picker-range',
+                                min_date_allowed=dt.datetime(1995, 8, 5),
+                                max_date_allowed=dt.datetime(2017, 9, 19),
+                                initial_visible_month=dt.datetime(2017, 8, 5),
+                                start_date=dt.datetime(2017, 8, 20).date(),
+                                end_date=dt.datetime(2017, 8, 25).date()
+                            ),
+                            html.Div(id='output-container-date-picker-range')
+                        ]),
                         html.P(
                             "Range filter (or use histogram):",
                             className="control_label",
