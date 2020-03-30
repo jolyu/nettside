@@ -28,22 +28,38 @@ app = dash.Dash(
 server = app.server
 
 # Import data
-df = pd.read_csv(DATA_PATH.joinpath("data.csv"), parse_dates=["dates"], low_memory=False, index_col="dates")
+ref = GetDbRef()
+dates = GetFirstAndLastDate(ref)
+initialDates = [dates[1] - dt.timedelta(days=180), dates[1]]
+global df 
+df = GetDataDF(ref, initialDates)
+
+#print(df)
+
+#df = pd.read_csv(DATA_PATH.joinpath("data.csv"), parse_dates=["dates"], low_memory=False, index_col="dates")
 #print(df)
 #df["dates"] = pd.to_datetime(df["dates"])
 
-avalible_years = list(set([date.year for date in df.index]))
-avalible_years.sort()
-YEARS = [{'label':str(y), "value":y} for y in avalible_years]
-avalible_months = list(set([date.month for date in df.index]))
-avalible_months.sort()
-avalible_dates = [avalible_years, avalible_months]
+# avalible_years = list(set([date.year for date in df.index]))
+# avalible_years.sort()
+# YEARS = [{'label':str(y), "value":y} for y in avalible_years]
+# avalible_months = list(set([date.month for date in df.index]))
+# avalible_months.sort()
+# avalible_dates = [avalible_years, avalible_months]
 #print(avalible_dates)
 #print(list(df.columns))
-
+global dff
 dff = DataToMonths(df)
 
 #print(dff)
+
+# CACHE_CONFIG = {
+#     # try 'filesystem' if you don't want to setup redis
+#     'CACHE_TYPE': 'redis',
+#     'CACHE_REDIS_URL': os.environ.get('REDIS_URL', 'redis://localhost:6379')
+# }
+# cache = Cache()
+# cache.init_app(app.server, config=CACHE_CONFIG)
 
 
 layout = dict(
@@ -58,18 +74,13 @@ layout = dict(
     
 )
 
-styles = {
-    'pre': {
-        'border': 'thin lightgrey solid',
-        'overflowX': 'scroll'
-    }
-}
 
 # Create app layout
 app.layout = html.Div(
     [
         dcc.Store(id="aggregate_data"),
         dcc.Store(id="day_selector"),
+        dcc.Store(id="update_graph"),
         # empty Div to trigger javascript file for graph resizing
         html.Div(id="output-clientside"),
         html.Div(
@@ -126,12 +137,11 @@ app.layout = html.Div(
                     [
                         html.Div([
                             dcc.DatePickerRange(
-                                id='my-date-picker-range',
-                                min_date_allowed=dt.datetime(1995, 8, 5),
-                                max_date_allowed=dt.datetime(2017, 9, 19),
-                                initial_visible_month=dt.datetime(2017, 8, 5),
-                                start_date=dt.datetime(2017, 8, 20).date(),
-                                end_date=dt.datetime(2017, 8, 25).date()
+                                id='db_date_picker',
+                                min_date_allowed=dates[0],
+                                max_date_allowed=dates[1],
+                                start_date=initialDates[0],
+                                end_date=initialDates[1]
                             ),
                             html.Div(id='output-container-date-picker-range')
                         ]),
@@ -139,14 +149,14 @@ app.layout = html.Div(
                             "Range filter (or use histogram):",
                             className="control_label",
                         ),
-                        dcc.RangeSlider(
+                        """ dcc.RangeSlider(
                             id="time_slider",
                             min=min(avalible_years),
                             max=max(avalible_years) + 1,
                             value=[min(avalible_years), max(avalible_years)],
                             step=1/12,
                             className="dcc_control",
-                        ),
+                        ), 
                         html.P("Filter? Export Currently min height", className="control_label"),
                         dcc.Dropdown(
                             id="year_select",
@@ -154,7 +164,7 @@ app.layout = html.Div(
                             multi=False,
                             value=max(avalible_years),
                             className="dcc_control",
-                        )
+                        )"""
                     ],
                     className="pretty_container four columns",
                     style={"min-height": "30em"},
@@ -242,9 +252,13 @@ app.clientside_callback(
 # Create Main graph from slider
 @app.callback(
     Output("count_graph", "figure"),
-    [Input("time_slider", "value")],
+    [
+        Input("time_slider", "value"),
+        Input("update_graph", "data")
+    ]
 )
-def makeCountFigure(timeSlider):
+def makeCountFigure(timeSlider, data):
+    
     ''' Reads the values of the main time slider and updates the main selector graph '''
     # Copy general layout settings
     layout_count = copy.deepcopy(layout)
@@ -291,6 +305,22 @@ def makeCountFigure(timeSlider):
     # Create the settings dictionary for the graph
     figure = dict(data=data, layout=layout_count)
     return figure
+
+@app.callback(
+    Output("update_graph", "data"),
+    [
+        Input("db_date_picker", "start_date"),
+        Input("db_date_picker", "end_date")
+    ]
+)
+def UpdateDB(startDate, endDate):
+    global df
+    global dff
+    #print(startDate, endDate)
+    df = GetDataDF(ref, DaySelectorString([startDate, endDate]))
+    print(df)
+    dff = DataToMonths(df)
+    return dt.datetime.now().timestamp()
 
 
 # Read the main graph and output selection range to slider
@@ -396,7 +426,7 @@ def UpdateDaySel(daySelector, timeSlider):
         days = TimeSliderToDate(timeSlider)
     else:
         days = daySelector["range"]["x"]
-    print(days)
+    #print(days)
     return days
 
 @app.callback(
@@ -410,7 +440,7 @@ def CreateDayGraph(dates):
     dff = FilterData(df, dates[0], dates[1])
 
     dfff = HourAverage(dff)
-    print(dfff)
+    #print(dfff)
     data = [
         dict(
             type="scatter",

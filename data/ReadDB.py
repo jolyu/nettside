@@ -23,6 +23,6 @@ results = ref.order_by_child('time').start_at(datetime(2020,1,1).timestamp()).en
 
 
 
-print(firstItem, lastItem)
+print(firstDate, lastDate)
 
 print(json.dumps(results[next(iter(results.keys()))], indent=4))
