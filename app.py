@@ -30,9 +30,10 @@ server = app.server
 # Import data
 ref = GetDbRef()
 dates = GetFirstAndLastDate(ref)
-initialDates = [dates[1] - dt.timedelta(days=180), dates[1]]
+initialDates = [dates[1] - dt.timedelta(days=60), dates[1]]
 global df 
 df = GetDataDF(ref, initialDates)
+
 
 #print(df)
 
