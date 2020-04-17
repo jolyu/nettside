@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import pandas as pd
 
 
@@ -34,3 +34,9 @@ def GetDataDF(dbRef, dates):
     df = df.drop(columns='time')
     df.index = pd.to_datetime(df.index, unit='s')
     return df
+
+def GetInitialDates(dbRef, days):
+    date = dbRef.order_by_child('time').limit_to_last(1).get()
+    date = datetime.fromtimestamp(int(next(iter(date.keys()))))
+    return [date - timedelta(days=days), date]
+    
