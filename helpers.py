@@ -2,9 +2,6 @@ import datetime as dt
 import pandas as pd
 import math
 
-
-treetten = 21
-
 def DataToMonths(data):
     df = data.resample('M').sum()
     return(df)
