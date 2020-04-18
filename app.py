@@ -118,7 +118,8 @@ def UpdateDates(nClicks, startDate, endDate):
         ))
         values.append(c)
 
-    return ["Dataset updated with dates: " + str(date[0]) + " and " + str(date[1]), date, dates[0], dates[1], options, values]
+    response = "Dataset updated with data between " + str(date[0]) + " and " + str(date[1]) + "."
+    return [response, date, dates[0], dates[1], options, values]
 
 @app.callback(
     Output("mainGraph", "figure"),
