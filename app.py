@@ -19,7 +19,7 @@ import pandas as pd
 
 # Selfmade helpers
 from helpers import *
-from database import GetDataDF, GetDbRef, GetFirstAndLastDate
+from database import GetDataDF, GetDbRef, GetFirstAndLastDate, GetInitialDates
 
 initialDays = 7
 
@@ -68,9 +68,21 @@ layout = dict(
     
 )
 
+colors = [
+    "rgb(123, 199, 255)",
+    "rgb(0, 204, 31)",
+    "rgb(0, 0, 0)"
+]
+
 from webpage import GetMainSite
 app.layout = GetMainSite(app, ref, initialDays)
 
+# Create callbacks
+app.clientside_callback(
+    ClientsideFunction(namespace="clientside", function_name="resize"),
+    Output("output-clientside", "children"),
+    [Input("mainGraph", "figure")],
+)
 
 @app.callback(
     [
@@ -78,24 +90,35 @@ app.layout = GetMainSite(app, ref, initialDays)
         Output("dbDates", "data"),
         Output("dbDatePicker", "min_date_allowed"),
         Output("dbDatePicker", "max_date_allowed"),
+        Output("checklistShow", "options"),
+        Output("checklistShow", "value"),
     ],
     [
         Input("fetchDbButton", "n_clicks"),
-        Input("dbDatePicker", "start_date"),
-        Input("dbDatePicker", "end_date"),
+    ],
+    [
+        State("dbDatePicker", "start_date"),
+        State("dbDatePicker", "end_date"),
     ]
 )
 def UpdateDates(nClicks, startDate, endDate):
     dates = GetFirstAndLastDate(ref)
-    initialDates = [GetFirstAndLastDate(ref)[1] - dt.timedelta(days=7), GetFirstAndLastDate(ref)[1]]
-    changedId = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    if "fetchDbButton" in changedId:
-        date = pd.to_datetime([startDate, endDate])
 
-        QueryDF(ref, date)
+    date = pd.to_datetime([startDate, endDate])
 
-        return ["Dataset updated!", date, dates[0], dates[1]]
-    return ["", initialDates, dates[0], dates[1]]
+    df = QueryDF(ref, date)
+    columns = list(df)
+
+    options = []
+    values = []
+    for c in columns[1:]:
+        options.append(dict(
+            label=c.capitalize(),
+            value=c,
+        ))
+        values.append(c)
+
+    return ["Dataset updated with dates: " + str(date[0]) + " and " + str(date[1]), date, dates[0], dates[1], options, values]
 
 @app.callback(
     Output("mainGraph", "figure"),
@@ -106,12 +129,12 @@ def UpdateDates(nClicks, startDate, endDate):
 )
 def CreateMainGraph(dates):
     if dates == None:
-        dates = [GetFirstAndLastDate(ref)[1] - dt.timedelta(days=7),GetFirstAndLastDate(ref)[1]]
+        dates = GetInitialDates(ref, initialDays)
     else:
         dates = DaySelectorString(dates)
-    print(dates)
+    #print(dates)
     df = QueryDF(ref, dates)
-    print(df)
+    #print(df)
     dff = DataToDays(df)
     layout_main = copy.deepcopy(layout)
 
@@ -130,11 +153,12 @@ def CreateMainGraph(dates):
             x=dff.index,
             y=dff["birds"],
             name="All birds",
+            marker=dict(color="rgb(123, 199, 255)"),
         ),
     ]
 
     # More layout settings
-    layout_main["title"] = "Total birds per month"
+    layout_main["title"] = "Total birds per day"
     layout_main["dragmode"] = "select" 
     layout_main["showlegend"] = False
     layout_main["autosize"] = True
@@ -142,6 +166,101 @@ def CreateMainGraph(dates):
     # Create the settings dictionary for the graph
     figure = dict(data=data, layout=layout_main)
     return figure
+
+@app.callback(
+    Output("secondGraph", "figure"),
+    [
+        Input("mainGraph", "selectedData"),
+        Input("checklistShow", "value")
+    ],
+    [
+        State("dbDates", "data"),
+    ]
+)
+def CreateSecondGraph(data, checked, dbDates):
+    layout_second = copy.deepcopy(layout)
+    
+    
+
+    if dbDates == None:
+        dbDates = GetInitialDates(ref, initialDays)
+    else:
+        dbDates = pd.to_datetime(dbDates)
+
+    dates = []
+    if data == None:
+        dates = dbDates
+    else:
+        dates = DaySelectorString(data["range"]["x"])
+
+    df = QueryDF(ref, dbDates)
+    dff = FilterData(df, dates[0], dates[1])
+
+    columns = list(dff)
+    
+    print(checked)
+    if checked == None:
+        checked = columns
+    else:
+        checked.append(columns[0])
+
+    data = []
+
+    def getYaxis(n):
+        if n > 0:
+            return str(n + 1)
+        return ""
+
+    i = 0
+
+    for indx, c in enumerate(columns):
+        print(c)
+        if c in checked:
+            data.append(
+                dict(
+                    type="spline",
+                    x=dff.index,
+                    y=dff[c],
+                    name=c.capitalize(),
+                    marker=dict(color=colors[indx]),
+                    
+                )
+            )
+
+            layout_second.update({"yaxis" + getYaxis(indx): dict(
+                title=c.capitalize(),
+                color=colors[indx],
+                tickfont=colors[indx],
+            )})
+
+            if indx > 0:
+                data[i].update(yaxis="y" + getYaxis(indx))
+                layout_second["yaxis" + getYaxis(indx)].update(
+                    overlaying="y",
+                    side="right",
+                    anchor="free",
+                    position= 1 - (indx - 1) * 0.05,
+                )
+            i += 1
+        
+
+
+
+    #print(data)
+    #print(layout_second)
+    # More layout settings
+    layout_second["title"] = "Selected data"
+    layout_second["dragmode"] = "select" 
+    layout_second["showlegend"] = True
+    layout_second["autosize"] = True
+    layout_second["hovermode"] = "y unified"
+
+    layout_second["xaxis"] = dict(domain=[0,1 - max(0, len(columns) - 2) * 0.05])
+
+    # Create the settings dictionary for the graph
+    figure = dict(data=data, layout=layout_second)
+    return figure
+
 
 
 # Main
