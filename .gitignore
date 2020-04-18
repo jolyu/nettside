@@ -132,3 +132,7 @@ dmypy.json
 #Keys
 key.json
 key.*
+
+# Cache
+cache-directory/
+__pycache__/

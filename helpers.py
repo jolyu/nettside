@@ -2,7 +2,6 @@ import datetime as dt
 import pandas as pd
 import math
 
-
 def DataToMonths(data):
     df = data.resample('M').sum()
     return(df)
