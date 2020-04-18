@@ -64,13 +64,14 @@ body {
   position: absolute;
 }
 
-#count_graph {
+#main_Graph {
   position: absolute;
   height: calc(100% - 30px);
   width: calc(100% - 30px);
 }
 
-#countGraphContainer {
+#secondaryGraphContainer,
+#mainGraphContainer {
   flex: 5;
   position: relative;
 }
