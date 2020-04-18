@@ -11,7 +11,7 @@ import pathlib
 def GetMainSite(dashApp, dbRef, days):
     PATH = pathlib.Path(__file__).parent
     ASSET_PATH = PATH.joinpath("assets").resolve()
-    print(ASSET_PATH)
+    #print(ASSET_PATH)
     dates = GetInitialDates(dbRef, days)
     mainSite = html.Div(
         [
@@ -98,12 +98,43 @@ def GetMainSite(dashApp, dbRef, days):
                 [
                     html.Div(
                         [
-                            dcc.Graph(id="mainGraph"),
+                            html.Div(
+                                [
+                                    dcc.Graph(id="mainGraph"),
+                                ],
+                                id="mainGraphContainer",
+                                className="pretty_container",
+                            ) 
                         ],
-                        className="pretty_container twelve columns",
-                    ) 
+                        className="twelve columns",
+                    )
                 ],
                 id="main_graph_div",
+                className="row flex-display",
+            ),
+            html.Div(
+                [
+                    html.Div(
+                        [
+                            html.Div(
+                                [
+                                    
+                                    dcc.Graph(id="secondGraph"),
+                                    html.H5("Show:"),
+                                    dcc.Checklist(
+                                        
+                                        labelStyle={'display': 'inline-block'},
+                                        id="checklistShow"
+                                    )
+                                ],
+                                id="secondaryGraphContainer",
+                                className="pretty_container",
+                            ) 
+                        ],
+                        className="twelve columns",
+                    )
+                ],
+                id="second_graph_div",
                 className="row flex-display",
             )
         ]
