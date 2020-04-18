@@ -36,7 +36,9 @@ def GetDataDF(dbRef, dates):
     return df
 
 def GetInitialDates(dbRef, days):
-    date = dbRef.order_by_child('time').limit_to_last(1).get()
-    date = datetime.fromtimestamp(int(next(iter(date.keys()))))
-    return [date - timedelta(days=days), date]
+    dates = GetFirstAndLastDate(dbRef)
+    if dates[1] - dates[0] > timedelta(days=days):
+        return [dates[1] - timedelta(days=days), dates[1]]
+    else:
+        return dates
     
