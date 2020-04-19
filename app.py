@@ -1,3 +1,56 @@
+# MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+# MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMW0xddddddddddddddddddddddddddddddxKWMMMMMMM
+# MMMMMMWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWMMMMMMMMMMMMMNl                                lWMMMMMMM
+# MMMMMM0c,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,cKMMMMMMMMMMMMMWx,''''''''''''''''''''''''''.    lWMMMMMMM
+# MMMMMMk.                                  .OMMMMMMMMMMMMMMWNNNNNNNNNNNNNNNNNNNNNNNNNNNO'   lWMMMMMMM
+# MMMMMMXxoooooooooooooo,    ;ooooooooooooooxXMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM0'   lWMMMMMMM
+# MMMMMMMMMMMMMMMMMMMMMWd   .xMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWWWWWWWWWWWWWWWWWWWWWWWWWWWO'   lWMMMMMMM
+# MMMMMMMMMMMMMMMMMMMMMNc    cNMMMMMMMMMMMMMMMMMMMMMMMMMMMMWO:,,,,,,,,,,,,,,,,,,,,,,,,,,'    lWMMMMMMM
+# MMMMMMMMMMMMMMMMMMMMMk.    .kMMMMMMMMMMMMMMMMMMMMMMMMMMMMWo                                oWMMMMMMM
+# MMMMMMMMMMMMMMMMMMMM0,      ,0MMMMMMMMMMMMMMMMMMMMMMMMMMMWo   .lxxxxxxxxxxxxxxxxxxxxxxxxxxkKWMMMMMMM
+# MMMMMMMMMMMMMMMMMMWO'   ;;   ,OWMMMMMMMMMMMMMMMMMMMMMMMMMWo   'OMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+# MMMMMMMMMMMMMMMMMXo.   cXXc   .oXMMMMMMMMMMMMMMMMMMMMMMMMWd   'OMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+# MMMMMMMMMMMMMMMXd'   .oNMMNo.   'dXWMMMMMMMMMMMMMMMMMMMMMWd   .d000000000000000000000000000KXMMMMMMM
+# MMMMMMMMMMMMW0o'    ;OWMMMMWO;    .lONMMMMMMMMMMMMMMMMMMMWo     ............................oWMMMMMM
+# MMMMMMMMWXOo,.    ,xNMMMMMMMMNk;.    'lkKNMMMMMMMMMMMMMMMWd.                               .oWMMMMMM
+# MMMMMKdl;.     .:kNMMMMMMMMMMMMNOc.     .,:o0WMMMMMMMMMMMMN000000000000000000000000000000000XMMMMMMM
+# MMMMMO'     .:dKWMMMMMNK00KNMMMMMWXkc'.    'OMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+# MMMMMWk,,:oOXWMMMMMMMMO'..'kMMMMMMMMMN0xl::kWMMMMMMMMWNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWMMM
+# MMMMMMWNNMMMMMMMMMMMMMk.  .kMMMMMMMMMMMMMMWMMMMMMMMMNo,'''''''''''''''''''''''''''''''''''''''',oNMM
+# MMMMMMMMMMMMMMMMMMMMMMk.  .kMMMMMMMMMMMMMMMMMMMMMMMMX:                                          :XMM
+# MMMMMMMMMMMMMMMMMMMMMMk.  .kMMMMMMMMMMMMMMMMMMMMMMMMWOdddddddddo,   .cddddddddddc.   ,odddddddddOWMM
+# MMMMMMMMMMMMMMMMMMMMMMk.  .kMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWo   '0MMMMMMMMMM0'   oWMMMMMMMMMMMMM
+# MMMMMMMMMMMMMMMMMMMMMMk.  .kMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWo   '0MMMMMMMMMM0'   oWMMMMMMMMMMMMM
+# MMMWNNNNNNNNNNNNNNNNNNd.  .dNNNNNNNNNNNNNNNNNNWMMMMMMMMMMMMMMMMWo   '0MMMMMMMMMM0'   oWMMMMMMMMMMMMM
+# MMNo...................    ...................oNMMMMMMMMMMMMMMMWo   '0MMMMMMMMMM0'   oWMMMMMMMMMMMMM
+# MMX:                                          :XMMMMMMMMMMMMMMMWo   '0MMMMMMMMMM0'   oWMMMMMMMMMMMMM
+# MMWOddddddddddddddddddddddddddddddddddddddddddOWMMMMMMMMMMMMMMMWo   '0MMMMMMMMMM0'   oWMMMMMMMMMMMMM
+# MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWo   '0MMMMMMMMMM0'   oWMMMMMMMMMMMMM
+# MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWKkdxXMMMMMMMMMMMMMWo   '0MMMMMMMMMM0'   oWMMMMMMMMMMMMM
+# MMMMMMMMMMWOl:l0WMMMMMMMMMMMMMMMMMMMMMMMMMMMNc  .kMMMMMMMMMMMMMWd.  ,0MMMMMMMMMM0,  .dWMMMMMMMMMMMMM
+# MMMMMMMMMMK,   :XMMMMMMMMMMMMMMMMMMMMMMMMMMMNc  .kMMMMMMMMMMMMMMXOkk0NMMMMMMMMMMN0kkOXMMMMMMMMMMMMMM
+# MMMMMMMMMMNk:;cOWMMMMMMMMMMMMMMMMMMMMMMMMMMMNc  .kMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+# MMMMMMMMMMMMWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNc  .kMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+# MMMMMMMMMMMKxdxKMMMMMMMMWXOdlcccldOXWMMMMMMMNc  .kMMMMNOddkNMMMMMMMMW0xdxKMMNOddONMMMMMMMW0ddkNMMMMM
+# MMMMMMMMMMWo  .dMMMMMMWOc.   ..    .l0WMMMMMNc  .kMMMMXc  .dWMMMMMMMK;  .OMMK,  ,KMMMMMMMX:  'OMMMMM
+# MMMMMMMMMMWo  .dMMMMMXl.  'lk000kc.  .dNMMMMNc  .kMMMMMO.  ,0MMMMMMWx.  lNMMK,  ,KMMMMMMMX;  .OMMMMM
+# MMMMMMMMMMWo  .dWMMMNl   cXMMMMMMW0;  .dWMMMNc  .kMMMMMNo   lNMMMMMK;  '0MMMK,  ,KMMMMMMMX;  .OMMMMM
+# MMMMMMMMMMWo  .dWMMMk.  ,KMMMMMMMMMO.  '0MMMNc  .kMMMMMMX;  .xWMMMWd.  oWMMMK,  ,KMMMMMMMX;  .OMMMMM
+# MMMMMMMMMMWo  .dWMMWd.  cNMMMMMMMMMX;  .kMMMNc  .kMMMMMMMO'  ,0MMMK,  ;KMMMMK,  ,KMMMMMMMX;  .OMMMMM
+# MMMMMMMMMMWo  .dWMMWd.  cNMMMMMMMMMK;  .kMMMNc  .kMMMMMMMWx.  :XMNo  .kWMMMMK,  '0MMMMMMMX;  .OMMMMM
+# MMMMMMMMMMWo  .dWMMMO'  '0MMMMMMMMWk.  ;KMMMNc  .kMMMMMMMMWd.  oNO.  lNMMMMMX;  .kMMMMMMMX;  .OMMMMM
+# MMMMMMMMMMWo  .dMMMMWd.  ,OWMMMMMNx'  .kWMMMNc  .xWWMMMMMMMNo. .c,  ;KMMMMMMWd.  ;0WMMMMMX;  .OMMMMM
+# MMMMMMMMMMWo  .dWMMMMNx'  .;ldxdl,.  ,OWMMMMWx.  .:cxXMMMMMMNl     'OMMMMMMMMXl.  .:odddoc.  .OMMMMM
+# MMMMMMMMMMWo  .dWMMMMMWXd;.       .:xXMMMMMMMNx,.   '0MMMMMMMNl   .xWMMMMMMMMMNk:..        ..cKMMMMM
+# MMMMMMMMMMNc  .xMMMMMMMMMWX0kxdxk0XWMMMMMMMMMMMNKOkk0WMMMMMMMWx. .dWMMMMMMMMMMMMWX0kxxxxkk0KXNMMMMMM
+# MMMMMMWWNXd.  ,KMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNWWWN0l. .dNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+# MMMMM0:,'.   ,OWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWk;,;;'.  ;OWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+# MMMMM0c,',;lkXMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWk:,'',:oONMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+# MMMMMMWWNWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWNNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+# MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+
+# Created by Øyvind Skaaden for jolyu. ELSYS project at NTNU spring 2020
+
 # Import dash
 import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
@@ -56,7 +109,7 @@ def QueryDF(dbRef, dates):
 def getFiaLaDates(dbRef):
     return GetFirstAndLastDate(dbRef)
 
-
+# Basic and general layout for the graphs
 layout = dict(
     autosize=True,
     automargin=True,
@@ -69,21 +122,38 @@ layout = dict(
     
 )
 
+# Colors for different lines
 colors = [
-    "rgb(123, 199, 255)",
-    "rgb(0, 204, 31)",
-    "rgb(0, 0, 0)"
+    "rgb(123, 199, 255)",   # Birds
+    "rgb(0, 204, 31)",      # Temperature
+    "rgb(0, 0, 0)"          # Wind
 ]
 
+# Gets the websites layout from function in webpage.py
 from webpage import GetMainSite
 app.layout = GetMainSite(app, ref, initialDays)
 
-# Create callbacks
+#####################################################################################
+#####################################################################################
+#####                                                                           #####
+#####   .o88b.  .d8b.  db      db      d8888b.  .d8b.   .o88b. db   dD .d8888.  #####
+#####  d8P  Y8 d8' `8b 88      88      88  `8D d8' `8b d8P  Y8 88 ,8P' 88'  YP  #####
+#####  8P      88ooo88 88      88      88oooY' 88ooo88 8P      88,8P   `8bo.    #####
+#####  8b      88~~~88 88      88      88~~~b. 88~~~88 8b      88`8b     `Y8b.  #####
+#####  Y8b  d8 88   88 88booo. 88booo. 88   8D 88   88 Y8b  d8 88 `88. db   8D  #####
+#####   `Y88P' YP   YP Y88888P Y88888P Y8888P' YP   YP  `Y88P' YP   YD `8888Y'  #####
+#####                                                                           #####
+#####################################################################################
+#####################################################################################
+
+
+# Resize the graphs and resizescripts
 app.clientside_callback(
     ClientsideFunction(namespace="clientside", function_name="resize"),
     Output("output-clientside", "children"),
     [Input("mainGraph", "figure")],
 )
+
 
 @app.callback(
     [
@@ -103,13 +173,18 @@ app.clientside_callback(
     ]
 )
 def UpdateDates(nClicks, startDate, endDate):
+    """ Query and cache the dataset, also sets the different settings across webpage. """
+    # Get dates for use as endstops for rangeselector
     dates = GetFirstAndLastDate(ref)
 
+    # Translates string to datetime objecs
     date = pd.to_datetime([startDate, endDate])
 
+    # Cache and query the database and update checkboxes below the second graph
     df = QueryDF(ref, date)
     columns = list(df)
     
+    # Update the options and values in second graph
     options = []
     values = []
     for c in columns[1:]:
@@ -119,9 +194,14 @@ def UpdateDates(nClicks, startDate, endDate):
         ))
         values.append(c)
 
+    # Database response string, tells the range for the dataset
     response = "Dataset updated with data between " + str(date[0]) + " and " + str(date[1]) + "."
     return [response, date, dates[0], dates[1], options, values]
 
+
+######################
+##### MAIN GRAPH #####
+######################
 @app.callback(
     Output("mainGraph", "figure"),
     [
@@ -129,18 +209,23 @@ def UpdateDates(nClicks, startDate, endDate):
     ]
 )
 def CreateMainGraph(dates):
+    """ Creates the main graph based on the selected dates """
+    # Check if dates contains something, else just use the initial dates
     if dates == None:
         dates = GetInitialDates(ref, initialDays)
     else:
-        dates = DaySelectorString(dates)
-    #print(dates)
+        dates = pd.to_datetime(dates)
+    
+    # Get the dataset
     df = QueryDF(ref, dates)
-    #print(df)
 
+    # Filter the dataframe to scale according to time and get what scale is being used
     dff, scale = DataToTimescale(df)
     
+    # Get a deepcopy of the base layout
     layout_main = copy.deepcopy(layout)
 
+    # Insert the data into the figure
     data = [
         dict(
             type="scatter",
@@ -170,6 +255,10 @@ def CreateMainGraph(dates):
     figure = dict(data=data, layout=layout_main)
     return figure
 
+
+########################
+##### SECOND GRAPH #####
+########################
 @app.callback(
     Output("secondGraph", "figure"),
     [
@@ -192,7 +281,7 @@ def CreateSecondGraph(data, checked, dbDates):
     if data == None:
         dates = dbDates
     else:
-        dates = DaySelectorString(data["range"]["x"])
+        dates = pd.to_datetime(data["range"]["x"])
         if dbDates[0] > dates[0] or dbDates[1] < dates[1]:
             dates = dbDates
 

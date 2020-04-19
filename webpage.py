@@ -6,18 +6,16 @@ import datetime as dt
 
 from database import GetInitialDates
 
-import pathlib
 
 def GetMainSite(dashApp, dbRef, days):
-    PATH = pathlib.Path(__file__).parent
-    ASSET_PATH = PATH.joinpath("assets").resolve()
-    #print(ASSET_PATH)
+    """ Returns the layout for the website. Documentation on dash.plotly.com """
     dates = GetInitialDates(dbRef, days)
     mainSite = html.Div(
         [
             # empty Div to trigger javascript file for graph resizing
             html.Div(id="output-clientside"),
             dcc.Store(id="dbDates"),
+            # Header Div
             html.Div(
                 [
                     html.Div(
@@ -65,6 +63,7 @@ def GetMainSite(dashApp, dbRef, days):
                 className="row flex-display",
                 style={"margin-bottom": "0em"},
             ),
+            # Div for main site
             html.Div(
                 [
                     html.Div(
@@ -119,7 +118,7 @@ def GetMainSite(dashApp, dbRef, days):
                         className="twelve columns",
                     )
                 ],
-                id="main_graph_div",
+                id="mainGraphDiv",
                 className="row flex-display",
             ),
             html.Div(
@@ -134,7 +133,7 @@ def GetMainSite(dashApp, dbRef, days):
                                     dcc.Checklist(
                                         
                                         labelStyle={'display': 'inline-block'},
-                                        id="checklistShow"
+                                        id="checklistShow",
                                     )
                                 ],
                                 id="secondaryGraphContainer",
