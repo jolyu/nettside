@@ -6,9 +6,32 @@ def DataToMonths(data):
     df = data.resample('M').sum()
     return(df)
 
+def DataToWeeks(data):
+    df = data.resample('W').sum()
+    return(df)
+
 def DataToDays(df):
     df = df.resample('D').sum()
     return(df)
+
+def DataToHours(df):
+    df = df.resample('H').sum()
+    return(df)
+
+def DataToTimescale(df):
+    firstAndLast = GetFirstLastIndex(df)
+    timeDiff = firstAndLast[1] - firstAndLast[0]
+    if timeDiff > dt.timedelta(weeks=52):
+        return DataToMonths(df), "month"
+    elif timeDiff > dt.timedelta(weeks=12):
+        return DataToWeeks(df), "week"
+    elif timeDiff > dt.timedelta(days=4):
+        return DataToDays(df), "day"
+    else:
+        return DataToHours(df), "hour"
+
+def GetFirstLastIndex(df):
+    return [df.first_valid_index(), df.last_valid_index()]
 
 def SumOfBirds(df, countKey):
     total = 0
@@ -61,8 +84,6 @@ def DaySelectorString(dates):
         
     return dates
         
-def HourAverage(df):
-    df = df.resample('H').sum()
-    return(df)
+
                     
 
