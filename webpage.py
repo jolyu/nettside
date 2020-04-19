@@ -81,6 +81,16 @@ def GetMainSite(dashApp, dbRef, days):
                             html.Button("Fetch DB",
                                 id="fetchDbButton"
                             ),
+                            html.A(
+                                html.Button("Download Dataset",
+                                    id="downloadDbButton"
+                                ),
+                                id="downloadBut",
+                                download="rawdata.csv",
+                                href="",
+                                target="_blank"
+                            ),
+                            
                         ],
                         className="pretty_container six columns",
                     ),

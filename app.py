@@ -16,6 +16,7 @@ import pathlib
 import math
 import datetime as dt
 import pandas as pd
+import urllib.parse as urlParse
 
 # Selfmade helpers
 from helpers import *
@@ -108,7 +109,7 @@ def UpdateDates(nClicks, startDate, endDate):
 
     df = QueryDF(ref, date)
     columns = list(df)
-
+    
     options = []
     values = []
     for c in columns[1:]:
@@ -126,7 +127,6 @@ def UpdateDates(nClicks, startDate, endDate):
     [
         Input("dbDates", "data"),
     ]
-    
 )
 def CreateMainGraph(dates):
     if dates == None:
@@ -136,7 +136,9 @@ def CreateMainGraph(dates):
     #print(dates)
     df = QueryDF(ref, dates)
     #print(df)
-    dff = DataToDays(df)
+
+    dff, scale = DataToTimescale(df)
+    
     layout_main = copy.deepcopy(layout)
 
     data = [
@@ -159,7 +161,7 @@ def CreateMainGraph(dates):
     ]
 
     # More layout settings
-    layout_main["title"] = "Total birds per day"
+    layout_main["title"] = "Total birds per " + scale
     layout_main["dragmode"] = "select" 
     layout_main["showlegend"] = False
     layout_main["autosize"] = True
@@ -180,8 +182,6 @@ def CreateMainGraph(dates):
 )
 def CreateSecondGraph(data, checked, dbDates):
     layout_second = copy.deepcopy(layout)
-    
-    
 
     if dbDates == None:
         dbDates = GetInitialDates(ref, initialDays)
@@ -193,6 +193,8 @@ def CreateSecondGraph(data, checked, dbDates):
         dates = dbDates
     else:
         dates = DaySelectorString(data["range"]["x"])
+        if dbDates[0] > dates[0] or dbDates[1] < dates[1]:
+            dates = dbDates
 
     df = QueryDF(ref, dbDates)
     dff = FilterData(df, dates[0], dates[1])
@@ -240,7 +242,7 @@ def CreateSecondGraph(data, checked, dbDates):
                     overlaying="y",
                     side="right",
                     anchor="free",
-                    position= 1 - (indx - 1) * 0.05,
+                    position= 1 - (i - 1) * 0.05,
                 )
             i += 1
         
@@ -256,13 +258,29 @@ def CreateSecondGraph(data, checked, dbDates):
     layout_second["autosize"] = True
     layout_second["hovermode"] = "y unified"
 
-    layout_second["xaxis"] = dict(domain=[0,1 - max(0, len(columns) - 2) * 0.05])
+    layout_second["xaxis"] = dict(domain=[0,1 - (max(0, len(columns) - 2) * 0.05)])
 
     # Create the settings dictionary for the graph
     figure = dict(data=data, layout=layout_second)
     return figure
 
+@app.callback(
+    Output("downloadBut", "href"),
+    [
+        Input("dbDates", "data"),
+    ]
+)
+def UpdateDownloadButton(dates):
+    if dates == None:
+        dates = GetInitialDates(ref, initialDays)
+    else:
+        dates = pd.to_datetime(dates)
+    
+    df = QueryDF(ref, dates)
 
+    csvString = df.to_csv(encoding="utf-8")
+    csvString = "data:text/csv;charset=utf-8," + urlParse.quote(csvString)
+    return csvString
 
 # Main
 if __name__ == "__main__":
