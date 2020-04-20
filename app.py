@@ -463,7 +463,7 @@ def UpdateDownloadButton(dates):
     # Query the dataset
     df = QueryDF(ref, dates)
 
-    # Convert dataframe to csv and convert into a "file" that is parsed
+    # Convert dataframe to csv and convert into a "file" that is parsed into a string with no invalid characters
     csvString = df.to_csv(encoding="utf-8")
     csvString = "data:text/csv;charset=utf-8," + urlParse.quote(csvString)
     return csvString
