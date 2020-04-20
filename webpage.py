@@ -20,6 +20,13 @@ import datetime as dt
 from database import GetInitialDates
 
 
+
+#####################
+#####################
+##### MAIN SITE #####
+#####################
+#####################
+
 def GetMainSite(dashApp, dbRef, days):
     """ Returns the layout for the website. Documentation on dash.plotly.com """
     dates = GetInitialDates(dbRef, days)

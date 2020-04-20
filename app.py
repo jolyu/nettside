@@ -220,11 +220,13 @@ app.clientside_callback(
 )
 
 
+
 ####################
 ####################
 ##### Query DB #####
 ####################
 ####################
+
 @app.callback(
     [
         Output("dbResponse", "children"),
@@ -275,6 +277,7 @@ def UpdateDates(nClicks, startDate, endDate):
 ##### MAIN GRAPH #####
 ######################
 ######################
+
 @app.callback(
     Output("mainGraph", "figure"),
     [
@@ -335,6 +338,7 @@ def CreateMainGraph(dates):
 ##### SECOND GRAPH #####
 ########################
 ########################
+
 @app.callback(
     Output("secondGraph", "figure"),
     [
@@ -446,6 +450,7 @@ def CreateSecondGraph(data, checked, dbDates):
 ##### DOWNLOAD #####
 ####################
 ####################
+
 @app.callback(
     Output("downloadBut", "href"),
     [
