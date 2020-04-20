@@ -149,6 +149,8 @@ app = dash.Dash(
 )
 server = app.server
 
+app.title = "jolyu | Dashboard"
+
 cache = Cache(app.server, config={
     'CACHE_TYPE': 'filesystem',
     'CACHE_DIR': 'cache-directory'

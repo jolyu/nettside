@@ -32,6 +32,7 @@ def GetMainSite(dashApp, dbRef, days):
     dates = GetInitialDates(dbRef, days)
     mainSite = html.Div(
         [
+            html.Title("jolyu | Dashboard"),
             # empty Div to trigger javascript file for graph resizing
             html.Div(id="output-clientside"),
             dcc.Store(id="dbDates"),
