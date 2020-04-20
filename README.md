@@ -1,2 +1,2 @@
-# nettside
+# Jolyu Nettside
 Selve nettsiden
