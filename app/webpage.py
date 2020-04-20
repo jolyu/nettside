@@ -17,7 +17,7 @@ import dash_html_components as html
 
 import datetime as dt
 
-from database import GetInitialDates
+from app.database import GetInitialDates
 
 
 

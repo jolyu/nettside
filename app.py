@@ -107,6 +107,8 @@ import dash
 from dash.dependencies import Input, Output, State, ClientsideFunction
 import dash_core_components as dcc
 import dash_html_components as html
+import flask
+import os
 
 
 # Flask Cache
@@ -122,8 +124,8 @@ import pandas as pd
 import urllib.parse as urlParse
 
 # Selfmade helpers
-from helpers import DataToTimescale, FilterData
-from database import GetDataDF, GetDbRef, GetFirstAndLastDate, GetInitialDates
+from app.helpers import DataToTimescale, FilterData
+from app.database import GetDataDF, GetDbRef, GetFirstAndLastDate, GetInitialDates
 
 
 
@@ -194,7 +196,7 @@ layout = dict(
 ###########################################################################
 
 # Gets the websites layout from function in webpage.py
-from webpage import GetMainSite
+from app.webpage import GetMainSite
 app.layout = GetMainSite(app, ref, initialDays)
 
 
@@ -473,6 +475,31 @@ def UpdateDownloadButton(dates):
     csvString = "data:text/csv;charset=utf-8," + urlParse.quote(csvString)
     return csvString
 
-# Main
+
+
+###################
+###################
+##### FAVICON #####
+###################
+###################
+
+@server.route('/favicon.ico')
+def favicon():
+    return flask.send_from_directory(app.get_asset_url("favicon.ico"), "favicon")
+
+
+##################################################
+##################################################
+#####                                        #####
+#####  .88b  d88.  .d8b.  d888888b d8b   db  #####
+#####  88'YbdP`88 d8' `8b   `88'   888o  88  #####
+#####  88  88  88 88ooo88    88    88V8o 88  #####
+#####  88  88  88 88~~~88    88    88 V8o88  #####
+#####  88  88  88 88   88   .88.   88  V888  #####
+#####  YP  YP  YP YP   YP Y888888P VP   V8P  #####
+#####                                        #####
+##################################################
+##################################################
+
 if __name__ == "__main__":
     app.run_server(debug=True)
