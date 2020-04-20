@@ -1,0 +1,7 @@
+dash==1.11.0
+firebase-admin==4.0.1
+Flask-Caching==1.8.0
+numpy==1.18.2
+pandas==1.0.3
+requests==2.23.0
+urllib3==1.25.8
