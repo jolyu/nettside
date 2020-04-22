@@ -18,9 +18,11 @@ def GenJSON(start, end, deltaMinute):
     while current <= end:
         d.update({str(current.timestamp())[:-2]:{
             'time': current.timestamp(),
-            'birds': GenRandomSin(current.timestamp(), 2, 2, 5, 6, 5, True, 0),
-            'temperature': - GenRandomSin(current.timestamp(), 1, 1,10,0,-5,False, 1), #Lage tilfeldig data
-            'wind': GenRandomSin(current.timestamp(), 5,1,5,0,5,True, 1)
+            'birds': GenRandomSin(current.timestamp(), 2, 20, 5, 6, 5, True, 0),
+            'Temperature': - GenRandomSin(current.timestamp(), 1, 5,10,0,-5,False, 1), #Lage tilfeldig data
+            'Wind': GenRandomSin(current.timestamp(), 5,5,5,0,5,True, 1),
+            'Humidity': GenRandomSin(current.timestamp(), 3,2,5,0,15,True, 1),
+            'Pressure': GenRandomSin(current.timestamp(), 0.2,2,15,15,1013,True, 1),
         }})
         current = current + timedelta(minutes=deltaMinute)
 
@@ -29,7 +31,7 @@ def GenJSON(start, end, deltaMinute):
 
 def GenRandomSin(time, periods, rand, amplitude, delayHour, centerline, removeUnder0, roundNr):
     """ Generates a sinus with random values added, with a amplitude and delay, periods per day"""
-    value = amplitude * math.sin((((time * periods)/ 86400)  * 2 * math.pi) - (delayHour * 3600)) + centerline + random.randint(-rand, rand)
+    value = amplitude * math.sin((((time * periods)/ 86400)  * 2 * math.pi) - (delayHour * 3600)) + centerline + random.randint(-rand, rand)/10
     if removeUnder0:
         value = max(0, value)
         
@@ -45,4 +47,4 @@ data = GenJSON(d1, d2, 5)
 
 
 with open("data/data.json", 'w') as outfile:
-    json.dump(data, outfile, sort_keys=True, indent=4)
+    json.dump(data, outfile)#, sort_keys=True, indent=4)
