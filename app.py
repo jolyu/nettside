@@ -84,6 +84,14 @@ colors = [
     "rgb(123, 199, 255)",   # Birds
     "rgb(0, 204, 31)",      # Temperature
     "rgb(0, 0, 0)"          # Wind
+    "rgb(228,26,28)",
+    "rgb(55,126,184)",
+    "rgb(77,175,74)",
+    "rgb(152,78,163)",
+    "rgb(255,127,0)",
+    "rgb(166,86,40)",
+    "rgb(247,129,191)",
+    "rgb(153,153,153)"
 ]
 
 
@@ -259,11 +267,12 @@ def UpdateDates(nClicks, startDate, endDate):
     # Cache and query the database and update checkboxes below the second graph
     df = QueryDF(ref, date)
     columns = list(df)
-    
+    columns.remove("birds")
+
     # Update the options and values in second graph
     options = []
     values = []
-    for c in columns[1:]:
+    for c in columns:
         options.append(dict(
             label=c.capitalize(),
             value=c,
@@ -271,7 +280,7 @@ def UpdateDates(nClicks, startDate, endDate):
         values.append(c)
 
     # Database response string, tells the range for the dataset
-    response = "Dataset updated with data between " + str(date[0]) + " and " + str(date[1]) + "."
+    response = "Dataset updated with data between " + str(date[0]) + " UTC and " + str(date[1]) + " UTC."
     return [response, date, dates[0], dates[1], options, values]
 
 
@@ -381,13 +390,13 @@ def CreateSecondGraph(data, checked, dbDates):
     # Get the clumns for use with drawing the lines that are not birds
     columns = list(dff)
     
-
+    #print(checked)
     if checked == None:
         checked = columns
     else:
-        # nearly alwas add the birds section
-        checked.append(columns[0])
-
+        # nearly always add the birds section because the checkBoxlist does not contain birds
+        checked.insert(0, "birds")
+    #print(checked)
     # the list used to hold the data that goes into the graph
     data = []
 
@@ -399,7 +408,6 @@ def CreateSecondGraph(data, checked, dbDates):
 
     # index for use with naming of axis
     i = 0
-
     # Generate the data and layout based on what graphs is shown
     for indx, c in enumerate(columns):
         if c in checked:
@@ -432,8 +440,6 @@ def CreateSecondGraph(data, checked, dbDates):
             i += 1
     
 
-    #print(data)
-    #print(layout_second)
     # More layout settings
     layout_second["title"] = "Selected data"
     layout_second["dragmode"] = "select" 
@@ -441,7 +447,7 @@ def CreateSecondGraph(data, checked, dbDates):
     layout_second["autosize"] = True
     layout_second["hovermode"] = "y unified"
 
-    layout_second["xaxis"] = dict(domain=[0,1 - (max(0, len(columns) - 2) * 0.05)])
+    layout_second["xaxis"] = dict(domain=[0,1 - (max(0, len(checked) - 2) * 0.05)])
 
     # Create the settings dictionary for the graph
     figure = dict(data=data, layout=layout_second)
@@ -463,7 +469,7 @@ def CreateSecondGraph(data, checked, dbDates):
 )
 def UpdateDownloadButton(dates):
     """ Updates the download button with the data from the current dataset """
-    ### Check if the dates variable is not empty
+    # Check if the dates variable is not empty
     if dates == None:
         dates = GetInitialDates(ref, initialDays)
     else:

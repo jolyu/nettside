@@ -37,15 +37,17 @@ def GetFirstAndLastDate(dbRef):
     last = dbRef.order_by_child('time').limit_to_last(1).get()
 
     # Translate into datetimes
-    firstDate = datetime.fromtimestamp(int(next(iter(first.keys()))))
-    lastDate = datetime.fromtimestamp(int(next(iter(last.keys()))))
+    firstDate = datetime.utcfromtimestamp(int(next(iter(first.keys()))))
+    lastDate = datetime.utcfromtimestamp(int(next(iter(last.keys()))))
 
     return [firstDate, lastDate]
 
 
 def GetDataJSON(dbRef, dates):
     """ Query the database with start and end dates. Can take a long time """
-    return dbRef.order_by_child('time').start_at(dates[0].timestamp()).end_at(dates[1].timestamp()).get()
+    if dates[1].timestamp() - dates[0].timestamp() < timedelta(days=1).total_seconds():
+        dates = GetFirstAndLastDate(dbRef)
+    return dbRef.order_by_child('time').start_at(dates[0].timestamp()).end_at(dates[1].timestamp() + 3600*24).get()
 
 
 def GetDataDF(dbRef, dates):
@@ -59,6 +61,12 @@ def GetDataDF(dbRef, dates):
     df = df.drop(columns='time')
     # Parse dataframe indexes to datetime objects
     df.index = pd.to_datetime(df.index, unit='s')
+    # moves the "birds" column to the front
+    colums = list(df)
+    colums.remove("birds")
+    colums = ["birds"] + colums
+    df = df[colums]
+    
     return df
 
 
