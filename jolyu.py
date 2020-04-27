@@ -82,17 +82,18 @@ initialDays = 7
 
 # Colors for different lines
 colors = [
-    "rgb(123, 199, 255)",   # Birds
-    "rgb(0, 204, 31)",      # Temperature
-    "rgb(0, 0, 0)"          # Wind
-    "rgb(228,26,28)",
-    "rgb(55,126,184)",
-    "rgb(77,175,74)",
-    "rgb(152,78,163)",
+    "rgb(166,206,227)",
+    "rgb(31,120,180)",
+    "rgb(178,223,138)",
+    "rgb(51,160,44)",
+    "rgb(251,154,153)",
+    "rgb(227,26,28)",
+    "rgb(253,191,111)",
     "rgb(255,127,0)",
-    "rgb(166,86,40)",
-    "rgb(247,129,191)",
-    "rgb(153,153,153)"
+    "rgb(202,178,214)",
+    "rgb(106,61,154)",
+    "rgb(255,255,153)",
+    "rgb(177,89,40)"
 ]
 
 
@@ -331,7 +332,7 @@ def CreateMainGraph(dates):
             x=dff.index,
             y=dff["birds"],
             name="All birds",
-            marker=dict(color="rgb(123, 199, 255)"),
+            marker=dict(color=colors[0]),
         ),
     ]
 
