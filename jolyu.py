@@ -444,10 +444,10 @@ def CreateSecondGraph(data, checked, dbDates):
 
     # More layout settings
     layout_second["title"] = "Selected data"
-    layout_second["dragmode"] = "select" 
+    layout_second["dragmode"] = "zoom" 
     layout_second["showlegend"] = True
     layout_second["autosize"] = True
-    layout_second["hovermode"] = "y unified"
+    layout_second["hovermode"] = "x unified"
 
     layout_second["xaxis"] = dict(domain=[0,1 - (max(0, len(checked) - 2) * 0.05)])
 
