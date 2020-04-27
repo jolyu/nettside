@@ -73,7 +73,7 @@ def GetMainSite(dashApp, dbRef, days):
                         [
                             html.A(
                                 html.Button("Learn More", id="learn-more-button"),
-                                href="https://jolyu.glados.no/",
+                                href="https://glados.no/files/ntnu/v20/ttt4270/jolyu_fremtidens_fugletitter_elsys_v2020.pdf",
                             )
                         ],
                         className="one-third column",
