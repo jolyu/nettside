@@ -29,7 +29,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.3
 MarkupSafe==1.1.1
 msgpack==1.0.0
-numpy==1.18.2
+numpy==1.21.0
 pandas==1.0.3
 pkg-resources==0.0.0
 plotly==4.6.0
