@@ -1,6 +1,6 @@
 dash==1.11.0
 firebase-admin==4.0.1
 Flask-Caching==1.8.0
-numpy==1.21.0
+numpy==1.22.0
 pandas==1.0.3
 
